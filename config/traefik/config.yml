@@ -1,19 +1,10 @@
-# ./config/traefik/traefik.yml
-global:
-  checkNewVersion: false
-  sendAnonymousUsage: false
-
-entryPoints:
-  web:
-    address: ":80"
-  websecure:
-    address: ":443"
-
-providers:
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false
-
-api:
-  dashboard: true
-  insecure: true
+http:
+  routers:
+    nginx:
+      rule: "Host(`symfony.local`)"
+      service: nginx
+  services:
+    nginx:
+      loadBalancer:
+        servers:
+          - url: "http://nginx:80"
